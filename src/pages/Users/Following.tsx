@@ -9,19 +9,18 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 
-export default function BasicTables() {
+export default function Following() {
   const navigate = useNavigate();
   const { generateAvatar } = useAvatar();
-  const { token } = useAuth();
+  const { loggedUser } = useAuth();
 
   const [followings, setFollowings] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const id = 1
-      if (!id) return;
+      if (!loggedUser) return;
       try {
-              const { data: followings } = await UserRepository.following(`${id}`);
+        const { data: followings } = await UserRepository.following(loggedUser.id);
 
         setFollowings(followings || []);
       } catch (err) {
@@ -30,7 +29,7 @@ export default function BasicTables() {
     };
 
     fetchData();
-  }, [token]);
+  }, [loggedUser]);
 
   return (
     <>

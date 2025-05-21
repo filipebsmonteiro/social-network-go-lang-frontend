@@ -25,6 +25,7 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Followers", path: "/users/followers" },
       { name: "Following", path: "/users/following" },
+      { name: "All Users", path: "/users" },
     ],
   },
   {

@@ -17,6 +17,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "./context/ThemeContext";
 import UserProfile from "./pages/Users/UserProfile";
+import UsersList from "./pages/Users/UsersList";
 
 export default function App() {
   const { theme } = useTheme();
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/" element={<UserProfiles />} />
 
             <Route path="users">
+              <Route path="" element={<UsersList />} />
               <Route path="followers" element={<Followers />} />
               <Route path="following" element={<Following />} />
               <Route path=":id/profile" element={<UserProfile />} />
