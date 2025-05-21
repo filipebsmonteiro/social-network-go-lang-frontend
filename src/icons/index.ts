@@ -54,6 +54,8 @@ import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 import { ReactComponent as SearchIcon } from "./search.svg?react";
 import { ReactComponent as LoadingIcon } from "./loading.svg?react";
+import { ReactComponent as ThumbsUpIcon } from "./thumbs-up.svg?react";
+import { ReactComponent as ThumbsDownIcon } from "./thumb-down.svg?react";
 
 export {
   ErrorHexaIcon,
@@ -112,4 +114,6 @@ export {
   ChatIcon,
   SearchIcon,
   LoadingIcon,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
 };

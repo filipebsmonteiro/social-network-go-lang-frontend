@@ -2,9 +2,13 @@ import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import useAvatar from "../../hooks/useAvatar";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const { generateAvatar } = useAvatar()
+  const { loggedUser } = useAuth();
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -20,10 +24,10 @@ export default function UserDropdown() {
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <img src="/images/user/owner.jpg" alt="User" />
+          <img src={generateAvatar()} alt="Logged User Avatar" />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
+        <span className="block mr-1 font-medium text-theme-sm">{loggedUser?.name}</span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""

@@ -20,6 +20,11 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
+    name: "Posts",
+    icon: <PageIcon />,
+    path: "/posts",
+  },
+  {
     name: "People",
     icon: <GroupIcon />,
     subItems: [
@@ -27,11 +32,6 @@ const navItems: NavItem[] = [
       { name: "Following", path: "/users/following" },
       { name: "All Users", path: "/users" },
     ],
-  },
-  {
-    name: "Posts",
-    icon: <PageIcon />,
-    path: "/posts",
   },
 ];
 

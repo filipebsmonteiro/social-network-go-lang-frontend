@@ -49,7 +49,7 @@ export default function UsersList() {
         title="List of Users"
         description="This is the page that show all User List given a filter."
       />
-      <PageBreadcrumb pageTitle="Followers List" />
+      <PageBreadcrumb pageTitle="List of Users" />
 
       <form className="my-6" onSubmit={(e) => e.preventDefault()}>
         <div className="relative">

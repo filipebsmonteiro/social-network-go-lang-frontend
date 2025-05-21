@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import { useTheme } from "./context/ThemeContext";
 import UserProfile from "./pages/Users/UserProfile";
 import UsersList from "./pages/Users/UsersList";
+import PostsList from "./pages/Posts/PostsList";
 
 export default function App() {
   const { theme } = useTheme();
@@ -38,7 +39,7 @@ export default function App() {
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
 
             {/* Others Page */}
-            <Route path="/" element={<UserProfiles />} />
+            <Route path="/" element={<PostsList />} />
 
             <Route path="users">
               <Route path="" element={<UsersList />} />
@@ -46,6 +47,7 @@ export default function App() {
               <Route path="following" element={<Following />} />
               <Route path=":id/profile" element={<UserProfile />} />
             </Route>
+            <Route path="/posts" element={<PostsList />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
