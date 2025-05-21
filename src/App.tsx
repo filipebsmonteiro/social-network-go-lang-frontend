@@ -34,13 +34,13 @@ export default function App() {
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
 
             {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/" element={<UserProfiles />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
 
             {/* Ui Elements */}
-            <Route path="/" element={<Avatars />} />
+            <Route path="/avatars" element={<Avatars />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/badge" element={<Badges />} />
             <Route path="/buttons" element={<Buttons />} />
