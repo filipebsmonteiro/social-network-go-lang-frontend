@@ -26,6 +26,10 @@ class UserRepository extends Repository<User> {
   unFollow (id: number | string) {
     return this.$axios.useBearerToken().post(`${this.endpoint}/${id}/unfollow`)
   }
+
+  posts (id: number | string) {
+    return this.$axios.useBearerToken().get(`${this.endpoint}/${id}/posts`)
+  }
 }
 
 export default new UserRepository()

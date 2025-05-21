@@ -3,21 +3,24 @@ import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
 import UserRepository, { User } from "../../repositories/User/UserRepository";
 import useAvatar from "../../hooks/useAvatar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Button from "../../components/ui/button/Button";
 import { UserCircleIcon } from "../../icons";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import PostCard from "../Posts/PostCard";
+import { Post } from "../../repositories/Post/PostRepository";
 
 export default function UserProfile() {
   const { generateAvatar } = useAvatar();
-  const navigate = useNavigate();
   const { id } = useParams();
   const { loggedUser } = useAuth();
 
   const [user, setUser] = useState<User | null>(null);
   const [followers, setFollowers] = useState<User[]>([]);
   const [followings, setFollowings] = useState<User[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,10 +29,12 @@ export default function UserProfile() {
         const { data: user } = await UserRepository.fetch(id);
         const { data: followers } = await UserRepository.followers(id);
         const { data: followings } = await UserRepository.following(id);
+        const { data: posts } = await UserRepository.posts(id);
 
         setUser(user);
         setFollowers(followers || []);
         setFollowings(followings || []);
+        setPosts(posts || []);
       } catch (err) {
         console.error("Error fetching user data:", err);
       }
@@ -139,6 +144,11 @@ export default function UserProfile() {
               </div>
             </div>
           </div>
+
+          <h4 className="mb-1 font-medium text-gray-800 text-theme-xl dark:text-white/90">Posts</h4>
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
 
         </ComponentCard>
       </div>

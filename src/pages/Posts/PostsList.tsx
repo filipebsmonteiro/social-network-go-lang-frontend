@@ -6,6 +6,7 @@ import { CalenderIcon, ThumbsDownIcon, ThumbsUpIcon } from "../../icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PostRepository, { Post } from "../../repositories/Post/PostRepository";
+import PostCard from "./PostCard";
 
 export default function PostsList() {
   const navigate = useNavigate();
@@ -39,27 +40,7 @@ export default function PostsList() {
     };
   }, []);
 
-  const handleLike = (id: number) => {
-    const updatedPosts = posts.map((post) => {
-      if (post.id === id) {
-        return { ...post, likes: post.likes + 1 };
-      }
-      return post;
-    });
-    setPosts(updatedPosts);
-    PostRepository.like(id);
-  }
-
-  const handleDislike = (id: number) => {
-    const updatedPosts = posts.map((post) => {
-      if(post.id === id){
-        return {...post, likes: post.likes - 1}
-      }
-      return post;
-    });
-    setPosts(updatedPosts);
-    PostRepository.unlike(id);
-  }
+  
 
   return (
     <>
@@ -71,29 +52,7 @@ export default function PostsList() {
 
       <div className="space-y-6">
         {posts.map((post) => (
-          <ComponentCard
-            key={post.id}
-            title={post.title}
-            headerEnd={
-              <span className="flex items-center gap-1 text-sm text-gray-500 cursor-pointer dark:text-gray-400">
-                <CalenderIcon />
-                {Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(new Date(post.createdAt))}
-              </span>
-            }
-            footer={
-              <div className="flex items-center gap-1 text-sm text-gray-500 cursor-pointer dark:text-gray-400">
-                <span className="flex gap-3 items-center">
-                  Likes: {post.likes}
-                  <ThumbsUpIcon className="cursor-pointer w-5 h-5 text-success-500" onClick={() => handleLike(post.id)} />
-                  <ThumbsDownIcon className="cursor-pointer w-5 h-5 text-error-500" onClick={() => handleDislike(post.id)} />
-                </span>
-              </div>
-            }
-          >
-            <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-              {post.content}
-            </p>
-          </ComponentCard>
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </>
