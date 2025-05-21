@@ -13,7 +13,7 @@ import useAuth from "../../hooks/useAuth";
 export default function BasicTables() {
   const navigate = useNavigate();
   const { generateAvatar } = useAvatar();
-  const { token } = useAuth();
+  const { user } = useAuth();
 
   const [followers, setFollowers] = useState<User[]>([]);
 
@@ -31,7 +31,7 @@ export default function BasicTables() {
     };
 
     fetchData();
-  }, [token]);
+  }, [user]);
 
   return (
     <>

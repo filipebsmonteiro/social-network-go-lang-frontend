@@ -1,7 +1,7 @@
 import { Repository } from "../Base/Repository";
 
 export type User = {
-  id: string;
+  id: number;
   name: string;
   nick: string;
   email: string;
@@ -11,22 +11,21 @@ export type User = {
 class UserRepository extends Repository<User> {
   endpoint = 'users'
 
-  followers (id: string) {
+  followers (id: number | string) {
     return this.$axios.useBearerToken().get<User[]>(`${this.endpoint}/${id}/followers`)
   }
 
-  following (id: string) {
+  following (id: number | string) {
     return this.$axios.useBearerToken().get<User[]>(`${this.endpoint}/${id}/following`)
   }
 
-  follow (id: string) {
+  follow (id: number | string) {
     return this.$axios.useBearerToken().post(`${this.endpoint}/${id}/follow`)
   }
 
-  unFollow (id: string) {
+  unFollow (id: number | string) {
     return this.$axios.useBearerToken().post(`${this.endpoint}/${id}/unfollow`)
   }
-  
 }
 
 export default new UserRepository()

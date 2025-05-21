@@ -28,7 +28,4 @@ export class Repository<T = unknown> {
   delete (id: string) {
     return this.$axios.useBearerToken().delete<T>(`${this.endpoint}/${id}`)
   }
-
 }
-
-export default new Repository()

@@ -13,7 +13,7 @@ export default function UserProfile() {
   const { generateAvatar } = useAvatar();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { loggedUserId } = useAuth();
+  const { loggedUser } = useAuth();
 
   const [user, setUser] = useState<User | null>(null);
   const [followers, setFollowers] = useState<User[]>([]);
@@ -21,12 +21,11 @@ export default function UserProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('id :>> ', id);
       if (!id) return;
       try {
-        const { data: user } = await UserRepository.fetch(`${id}`);
-        const { data: followers } = await UserRepository.followers(`${id}`);
-        const { data: followings } = await UserRepository.following(`${id}`);
+        const { data: user } = await UserRepository.fetch(id);
+        const { data: followers } = await UserRepository.followers(id);
+        const { data: followings } = await UserRepository.following(id);
 
         setUser(user);
         setFollowers(followers || []);
@@ -39,19 +38,23 @@ export default function UserProfile() {
     fetchData();
   }, [id]);
 
-  if (!user) return <div>Loading...</div>;
-
-  const isFollower = followers.some((follower) => follower.id.toString() === loggedUserId?.toString());
+  const [isFollower, setIsFollower] = useState<boolean>(false);
+  useEffect(() => {
+    setIsFollower(followers.some((follower) => follower.id === loggedUser?.id));
+  }, [followers, loggedUser]);
 
   const relationHandler = async () => {
+    if (!user) return;
     if (isFollower) {
       await UserRepository.unFollow(user.id);
-      setFollowers(followers.filter((follower) => follower.id !== user.id));
+      setFollowers(followers.filter((follower) => follower.id !== loggedUser?.id));
     } else {
       await UserRepository.follow(user.id);
-      setFollowers([...followers, user]);
+      setFollowers([...followers, loggedUser as User]);
     }
   };
+
+  if (!user) return <div>Loading...</div>;
 
   return (
     <>
@@ -70,6 +73,7 @@ export default function UserProfile() {
                 src={generateAvatar()}
                 alt={user.name + ' avatar'}
               />
+              {isFollower}
             </div>
             <div className="flex items-center gap-3">
               <div>
@@ -83,7 +87,7 @@ export default function UserProfile() {
             </div>
             <Button
               size="sm"
-              variant="primary"
+              variant={ isFollower ? 'error' : 'success' }
               className="ml-auto"
               onClick={relationHandler}
               startIcon={<UserCircleIcon />}

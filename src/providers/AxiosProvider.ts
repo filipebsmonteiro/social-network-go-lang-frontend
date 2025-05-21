@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify';
 import axios, { AxiosError, type AxiosInstance, type AxiosInterceptorManager, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
-import useAuth from '../hooks/useAuth';
 
 
 // Error Treatment
@@ -82,13 +81,14 @@ const axiosWithAuth: AxiosWithOptionalAuth = axios.create({
 });
 axiosWithAuth.interceptors.response.use((response) => response, onReject);
 axiosWithAuth.useBearerToken = (): AxiosWithAuth => {
+  const token = localStorage.getItem("token")
   if (
     axiosWithAuth.interceptors.request &&
-    axiosWithAuth.interceptors.request.handlers?.length === 0
+    axiosWithAuth.interceptors.request.handlers?.length === 0 &&
+    token
   ) {
     axiosWithAuth.interceptors.request.use(
       (config) => {
-        const { token } = useAuth()
         config.headers['Authorization'] = `Bearer ${token}`
         return config
       },
