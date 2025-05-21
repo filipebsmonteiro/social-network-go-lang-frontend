@@ -9,11 +9,14 @@ import Badges from "./pages/UiElements/Badges";
 import Avatars from "./pages/UiElements/Avatars";
 import Buttons from "./pages/UiElements/Buttons";
 import BasicTables from "./pages/Tables/BasicTables";
+import Followers from "./pages/Users/Followers";
+import Following from "./pages/Users/Following";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "./context/ThemeContext";
+import UserProfile from "./pages/Users/UserProfile";
 
 export default function App() {
   const { theme } = useTheme();
@@ -35,6 +38,12 @@ export default function App() {
 
             {/* Others Page */}
             <Route path="/" element={<UserProfiles />} />
+
+            <Route path="users">
+              <Route path="followers" element={<Followers />} />
+              <Route path="following" element={<Following />} />
+              <Route path=":id/profile" element={<UserProfile />} />
+            </Route>
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />

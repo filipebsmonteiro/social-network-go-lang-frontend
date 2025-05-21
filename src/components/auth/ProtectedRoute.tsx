@@ -10,7 +10,5 @@ export function ProtectedRoute({ children }: { children: JSX.Element }) {
     return <Navigate to="/signin" replace state={{ from: location }} />;
   }
 
-  console.log('isAuthenticated :>> ', isAuthenticated);
-
   return <>{children}</>;
 }

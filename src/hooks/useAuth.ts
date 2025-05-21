@@ -1,6 +1,17 @@
+import { jwtDecode } from 'jwt-decode'
+
 const useAuth = () => {
   const token = localStorage.getItem("token");
   const isAuthenticated = token ? true : false;
+  let decoded: {
+    authorized: boolean
+    exp: number
+    userId: number
+  } | null = null;
+
+  if (token) {
+    decoded = jwtDecode(token);
+  }
 
   const signIn = (token: string) => {
     localStorage.setItem("token", token);
@@ -13,6 +24,7 @@ const useAuth = () => {
   };
 
   return {
+    loggedUserId: decoded?.userId,
     isAuthenticated,
     token,
     signIn,

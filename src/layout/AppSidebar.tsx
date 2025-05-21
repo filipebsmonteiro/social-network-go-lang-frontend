@@ -7,7 +7,7 @@ import {
   ChevronDownIcon,
   HorizontaLDots,
   PageIcon,
-  TableIcon,
+  GroupIcon
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -15,21 +15,22 @@ type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { name: string; path: string; tag?: string; }[];
 };
 
 const navItems: NavItem[] = [
   {
-    name: "Tables",
-    icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+    name: "People",
+    icon: <GroupIcon />,
+    subItems: [
+      { name: "Followers", path: "/users/followers" },
+      { name: "Following", path: "/users/following" },
+    ],
   },
   {
-    name: "Pages",
+    name: "Posts",
     icon: <PageIcon />,
-    subItems: [
-      { name: "404 Error", path: "/error-404", pro: false },
-    ],
+    path: "/posts",
   },
 ];
 
@@ -38,11 +39,12 @@ const othersItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     name: "UI Elements",
     subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
+      { name: "table", path: "/basic-tables" },
+      { name: "Alerts", path: "/alerts" },
+      { name: "Avatar", path: "/avatars" },
+      { name: "Badge", path: "/badge" },
+      { name: "Buttons", path: "/buttons" },
+      { name: "Images", path: "/images" },
     ],
   },
 ];
@@ -204,7 +206,7 @@ const AppSidebar: React.FC = () => {
                     >
                       {subItem.name}
                       <span className="flex items-center gap-1 ml-auto">
-                        {subItem.new && (
+                        {subItem.tag && (
                           <span
                             className={`ml-auto ${
                               isActive(subItem.path)
@@ -212,18 +214,7 @@ const AppSidebar: React.FC = () => {
                                 : "menu-dropdown-badge-inactive"
                             } menu-dropdown-badge`}
                           >
-                            new
-                          </span>
-                        )}
-                        {subItem.pro && (
-                          <span
-                            className={`ml-auto ${
-                              isActive(subItem.path)
-                                ? "menu-dropdown-badge-active"
-                                : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
-                          >
-                            pro
+                            {subItem.tag}
                           </span>
                         )}
                       </span>
