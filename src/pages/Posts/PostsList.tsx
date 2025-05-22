@@ -1,16 +1,11 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
-import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
-import useAvatar from "../../hooks/useAvatar";
-import { CalenderIcon, ThumbsDownIcon, ThumbsUpIcon } from "../../icons";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PostRepository, { Post } from "../../repositories/Post/PostRepository";
 import PostCard from "./PostCard";
+import { LoadingIcon } from "../../icons";
 
 export default function PostsList() {
-  const navigate = useNavigate();
-  const { generateAvatar } = useAvatar();
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,9 +46,11 @@ export default function PostsList() {
       <PageBreadcrumb pageTitle="List of Posts" />
 
       <div className="space-y-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+        {
+          loading
+            ? <span className="flex gap-3"><LoadingIcon /> Loading...</span> 
+            : posts.map((post) => <PostCard key={post.id} post={post} />)
+        }
       </div>
     </>
   );

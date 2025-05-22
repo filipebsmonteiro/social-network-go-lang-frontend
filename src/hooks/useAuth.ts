@@ -17,8 +17,13 @@ const useAuth = () => {
 
   useEffect(() => {
     if (token) {
-      const decodedToken = jwtDecode<DecodedToken>(token)
-      setDecoded(decodedToken)
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(token)
+        setDecoded(decodedToken)
+      } catch (error) {
+        signOut()
+        console.error("Failed to decode token:", error)
+      }
     }
   }, [token])
 

@@ -1,10 +1,15 @@
 import { toast } from 'react-toastify';
 import axios, { AxiosError, type AxiosInstance, type AxiosInterceptorManager, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
 
+type ApiError = {
+  Error?: string;
+  // message?: string;
+  errors?: Record<string, unknown>[];
+}
 
 // Error Treatment
 const onReject = (
-  error: AxiosError<{ message?: string; errors?: Record<string, unknown>[]; }>
+  error: AxiosError<ApiError>
 ) => {
   //const originalRequest = error.config
 
@@ -14,13 +19,19 @@ const onReject = (
 
   // 400 Bad Request
   if (error.response) {
-    if (error.response.status === 400 && error.response.data.message) {
-      toast(error.response.data.message, { type: 'error' });
+    if (error.response.status === 400 && error.response.data.Error) {
+      toast(error.response.data.Error, { type: 'error' });
       return Promise.reject(error)
     }
 
     // 401 Unauthorized
     if (error.response.status === 401) {
+      if (error.response.data.Error == 'Token is expired') {
+        localStorage.removeItem('token')
+        window.location.href = '/signin'
+        return Promise.reject(error)
+      }
+
       toast('User has no permission to perform this transaction on API!', { type: 'error' });
       return Promise.reject(error)
     }
@@ -32,25 +43,30 @@ const onReject = (
     }
 
     // 422 Unprocessable Entity
-    if (error.response.status === 422 && error.response.data.errors) {
-      const errors: Record<string, any> = error.response.data.errors
-      Object.keys(errors).map((field: string) => {
-        if (Array.isArray(errors[field])) {
-          errors[field].map(msg => {
-            toast(msg, { type: 'error' });
-          })
-        } else {
-          toast(errors[field], { type: 'error' });
-        }
-      })
+    if (error.response.status === 422) {
+      if (error.response.data.errors) {
+        const errors: Record<string, any> = error.response.data.errors
+        Object.keys(errors).map((field: string) => {
+          if (Array.isArray(errors[field])) {
+            errors[field].map(msg => {
+              toast(msg, { type: 'error' });
+            })
+          } else {
+            toast(errors[field], { type: 'error' });
+          }
+        })
+      }
 
+      if (error.response.data.Error) {
+        toast(error.response.data.Error, { type: 'error' });
+      }
     }
 
     // 500 Internal Server Error
     if (error.response.status === 500) {
       toast(`Server Internal Error, check the console.`, { type: 'error' });
-      if (error.response.data?.message) {
-        toast(error.response.data.message, { type: 'error' });
+      if (error.response.data?.Error) {
+        toast(error.response.data.Error, { type: 'error' });
       }
       return Promise.reject(error)
     }
@@ -62,7 +78,7 @@ const onReject = (
 axios.interceptors.response.use((response) => response, onReject);
 
 export type AxiosWithOptionalAuth =  AxiosInstance & {
-  useBearerToken?: Function;
+  useBearerToken?: () => AxiosWithAuth;
   interceptors: {
     request: AxiosInterceptorManager<InternalAxiosRequestConfig> & { handlers?: Function[]; };
     response: AxiosInterceptorManager<AxiosResponse>;
