@@ -26,15 +26,25 @@ export default function UserProfile() {
     const fetchData = async () => {
       if (!id) return;
       try {
-        const { data: user } = await UserRepository.fetch(id);
-        const { data: followers } = await UserRepository.followers(id);
-        const { data: followings } = await UserRepository.following(id);
-        const { data: posts } = await UserRepository.posts(id);
+        const [userRes, followersRes, followingsRes, postsRes] = await Promise.allSettled([
+          UserRepository.fetch(id),
+          UserRepository.followers(id),
+          UserRepository.following(id),
+          UserRepository.posts(id),
+        ]);
 
-        setUser(user);
-        setFollowers(followers || []);
-        setFollowings(followings || []);
-        setPosts(posts || []);
+        if (userRes.status === 'fulfilled') {
+          setUser(userRes.value.data);
+        }
+        if (followersRes.status === 'fulfilled') {
+          setFollowers(followersRes.value.data || []);
+        }
+        if (followingsRes.status === 'fulfilled') {
+          setFollowings(followingsRes.value.data || []);
+        }
+        if (postsRes.status === 'fulfilled') {
+          setPosts(postsRes.value.data || []);
+        }
       } catch (err) {
         console.error("Error fetching user data:", err);
       }
