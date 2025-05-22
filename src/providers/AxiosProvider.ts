@@ -20,6 +20,7 @@ const onReject = (
   // 400 Bad Request
   if (error.response) {
     if (error.response.status === 400 && error.response.data.Error) {
+      console.log('error.response.data.Error :>> ', error.response.data.Error);
       toast(error.response.data.Error, { type: 'error' });
       return Promise.reject(error)
     }

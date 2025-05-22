@@ -18,7 +18,9 @@ export default function BasicTables() {
           {/* Show All Icons */}
           {Object.keys(IconList).map(key => {
             const Component = IconList[key];
-            return <Component />;
+            return <span data-icon-name={key}>
+              <Component />
+            </span>;
           })}
         </div>
         <ComponentCard title="Basic Table 1">
