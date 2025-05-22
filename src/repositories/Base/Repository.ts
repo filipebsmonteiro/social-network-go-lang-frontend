@@ -13,19 +13,19 @@ export class Repository<T = unknown> {
     return this.$axios.useBearerToken().get<T[]>(`${this.endpoint}`, { params })
   }
 
-  fetch (id: string) {
+  fetch (id: string | number) {
     return this.$axios.useBearerToken().get<T>(`${this.endpoint}/${id}`)
   }
 
   create (data: Partial<T>) {
-    return this.$axios.useBearerToken().post<T>(`${this.endpoint}`, { data })
+    return this.$axios.useBearerToken().post<T>(`${this.endpoint}`, data)
   }
 
-  update (id: string, data: Partial<T>) {
-    return this.$axios.useBearerToken().put<T>(`${this.endpoint}/${id}`, { data })
+  update (id: string | number, data: Partial<T>) {
+    return this.$axios.useBearerToken().put<T>(`${this.endpoint}/${id}`, data)
   }
 
-  delete (id: string) {
+  delete (id: string | number) {
     return this.$axios.useBearerToken().delete<T>(`${this.endpoint}/${id}`)
   }
 }

@@ -25,15 +25,15 @@ export default function App() {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={4000}
+        closeOnClick={true}
+        pauseOnHover={true}
+        theme={theme}
+      />
       <Router>
         <ScrollToTop />
-        <ToastContainer
-          position="bottom-center"
-          autoClose={4000}
-          closeOnClick={true}
-          pauseOnHover={true}
-          theme={theme}
-        />
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
@@ -48,6 +48,8 @@ export default function App() {
               <Route path=":id/profile" element={<UserProfile />} />
             </Route>
             <Route path="/posts" element={<PostsList />} />
+
+            <Route path="/profile" element={<UserProfiles />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
