@@ -54,7 +54,14 @@ export default function PostsList() {
 
   const handleDislike = async (id: Post["id"]) => {
     setLoading(true);
-    setPosts(posts.map((post) => (post.id === id ? {...post, likes: post.likes - 1} : post)));
+    setPosts(posts.map((post) => {
+      if (post.id === id) {
+        if (post.likes > 0) {
+          return {...post, likes: post.likes - 1}
+        }
+      }
+      return post;
+    }));
     setLoading(false);
   }
 
@@ -62,11 +69,13 @@ export default function PostsList() {
     setLoading(true);
 
     function ConfirmDelete({closeToast}: ToastContentProps) {
-      return <div className="flex flex-col gap-2">
-          Confirm Delete?
+      return <div className="flex flex-col gap-2 w-full">
+          <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90">
+            Confirm Delete?
+          </h3>
           <div className="flex gap-2">
-            <Button variant="outline" size="xs" onClick={() => closeToast("cancel")}>Cancel</Button>
-            <Button variant="error" size="xs" onClick={() => closeToast("delete")}>Delete</Button>
+            <Button variant="outline" size="xs" className="flex-1" onClick={() => closeToast("cancel")}>Cancel</Button>
+            <Button variant="error" size="xs" className="flex-1" onClick={() => closeToast("delete")}>Delete</Button>
           </div>
         </div>
     }
