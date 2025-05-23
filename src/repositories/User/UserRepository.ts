@@ -1,4 +1,5 @@
 import { Repository } from "../Base/Repository";
+import { Post } from "../Post/PostRepository";
 
 export type User = {
   id: number;
@@ -29,6 +30,14 @@ class UserRepository extends Repository<User> {
 
   posts (id: number | string) {
     return this.$axios.useBearerToken().get(`${this.endpoint}/${id}/posts`)
+  }
+
+  profile (id: number | string) {
+    return this.$axios.useBearerToken().get<User & {
+      followers: User[];
+      followings: User[];
+      posts: Post[];
+    }>(`${this.endpoint}/${id}/profile`)
   }
 }
 
