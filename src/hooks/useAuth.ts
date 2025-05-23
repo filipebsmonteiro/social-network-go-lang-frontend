@@ -58,6 +58,7 @@ const useAuth = () => {
     loggedUser,
     signIn,
     signOut,
+    setLoggedUser,
   };
 };
 

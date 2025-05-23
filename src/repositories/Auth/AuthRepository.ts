@@ -15,6 +15,17 @@ class AuthRepository extends Repository {
   logout() {
     return this.$axios.useBearerToken().post(`${this.endpoint}/logout`)
   }
+
+  updatePassword({ newPassword, oldPassword }: { newPassword: string; oldPassword: string; }) {
+    return this.$axios.useBearerToken()
+      .post(
+        `${this.endpoint}/update-password`,
+        {
+          new: newPassword,
+          old: oldPassword
+        }
+      )
+  }
 }
 
 export default new AuthRepository()
